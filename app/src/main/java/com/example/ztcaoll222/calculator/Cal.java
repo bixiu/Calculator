@@ -32,7 +32,28 @@ public class Cal {
 
         for (int i = 0; i < common.length(); i++) {
             if (!isDouble(common.charAt(i))) {
-                expression.push(common.charAt(i));
+                switch (common.charAt(i)) {
+                    case '+':
+                        if (Objects.equals(expression.peek().getClass().getName(), "java.lang.Double") || Objects.equals(expression.peek(), ')')) {
+                            expression.push('+');
+                        }
+                        break;
+
+                    case '-':
+                        if (Objects.equals(expression.peek().getClass().getName(), "java.lang.Double") || Objects.equals(expression.peek(), ')')) {
+                            expression.push('-');
+                        } else {
+                            expression.push('#');
+                        }
+                        break;
+
+                    case '*':
+                    case '/':
+                    case '(':
+                    case ')':
+                        expression.push(common.charAt(i));
+                        break;
+                }
             } else {
                 StringBuilder temp = new StringBuilder();
                 while (isDouble(common.charAt(i))) {
@@ -49,6 +70,14 @@ public class Cal {
                 } catch (java.lang.NumberFormatException e) {
                     throw new java.lang.NumberFormatException(String.valueOf(i));
                 }
+
+                if (!expression.isEmpty()) {
+                    while (Objects.equals(expression.peek(), '#')) {
+                        num = -1 * num;
+                        expression.pop();
+                    }
+                }
+
                 expression.push(num);
 
                 i--;
@@ -64,8 +93,8 @@ public class Cal {
 
         for (Object i :
                 commonList) {
-            // 遇到操作数时
             if (Objects.equals(i.getClass().getName(), "java.lang.Double")) {
+                // 遇到操作数时
                 s2.push(i);
             } else {
                 String temp = i.toString();
