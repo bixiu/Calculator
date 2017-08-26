@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.button_equal:
                 Double ret = 0.0;
-                Cal cal = new Cal();
+                CalTree cal = new CalTree();
                 ret = cal.start(textView.getText().toString());
                 textView.setText(ret.toString());
                 clear_flag = true;
